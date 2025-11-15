@@ -1,0 +1,38 @@
+
+.container {
+min-height: 100vh;
+background: #EAF8EE;
+padding: 1.5rem 1.25rem;
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+}
+.headerTitle { font-size: 1.75rem; font-weight: 600; color: #2B6B3A; }
+.headerSubtitle { font-size: 0.9rem; color: gray; }
+.statsRow { display: flex; gap: 1rem; flex-wrap: wrap; }
+.statCard {
+background: white;
+padding: 0.75rem 1rem;
+border-radius: 0.75rem;
+font-size: 0.9rem;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.globeWrapper {
+height: 20rem;
+background: white;
+border-radius: 1rem;
+display: flex;
+align-items: center;
+justify-content: center;
+color: gray;
+box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+.actionItem {
+background: white;
+padding: 0.75rem;
+text-align: center;
+border-radius: 0.75rem;
+font-size: 0.9rem;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}

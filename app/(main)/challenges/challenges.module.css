@@ -1,0 +1,38 @@
+
+
+/* ==============================
+challenges.module.css
+============================== */
+.container {
+min-height: 100vh;
+background: #EAF8EE;
+padding: 1.5rem 1.25rem;
+display: flex;
+flex-direction: column;
+gap: 1.25rem;
+}
+.headerTitle {
+font-size: 1.75rem;
+font-weight: 600;
+color: #2B6B3A;
+}
+.card {
+background: #ffffff;
+padding: 1rem;
+border-radius: 0.75rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.cardText { display: flex; flex-direction: column; }
+.cardTitle { font-weight: 600; color: #2B6B3A; }
+.cardMeta { color: gray; font-size: 0.75rem; }
+.actionButton {
+background: #4CAF50;
+color: white;
+padding: 0.5rem 1rem;
+border-radius: 0.5rem;
+font-size: 0.85rem;
+}
+@media (min-width: 768px) { .card { padding: 1.25rem; } }
