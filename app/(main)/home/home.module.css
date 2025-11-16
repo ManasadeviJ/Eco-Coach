@@ -1,65 +1,190 @@
+/* ----------------------------- */
+/* UNIVERSAL STYLES */
+/* ----------------------------- */
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #52A676;
+  color: white;
+}
+
+/* Main Content (shared for mobile + desktop) */
 .container {
-min-height: 100vh;
-background: #EAF8EE;
-padding: 1.5rem 1.25rem;
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
+
+/* ----------------------------- */
+/* MOBILE HEADER */
+/* ----------------------------- */
+
+.mobileTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menuButton {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+}
+
+.statsTop {
+  display: flex;
+  gap: 0.65rem;
+}
+
+/* Chips */
+.coinsChip,
+.treesChip {
+  background: rgba(0,0,0,0.18);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 0.6rem;
+  font-weight: 500;
+}
+
+/* Mobile dropdown */
+.mobileMenu {
+  background: rgba(0,0,0,0.25);
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.mobileMenu a {
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+/* ----------------------------- */
+/* CIRCLE SECTION */
+/* ----------------------------- */
+
 .headerTitle {
-font-size: 1.75rem;
-font-weight: 600;
-color: #2B6B3A;
+  font-size: 2rem;
+  font-weight: bold;
 }
-.headerSubtitle {
-font-size: 0.9rem;
-color: #555;
+
+.circleWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }
-.statsRow {
-display: flex;
-gap: 1rem;
-flex-wrap: wrap;
+
+.circle {
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle at center, #B5E7C8, #68B081);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 }
-.statCard {
-background: #ffffff;
-padding: 0.75rem 1rem;
-border-radius: 0.75rem;
-font-size: 0.9rem;
-font-weight: 500;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+.circleText {
+  font-size: 1.4rem;
+  font-weight: 600;
+  width: 70%;
+  text-align: center;
 }
-.suggestionCard {
-background: #ffffff;
-padding: 1.25rem;
-border-radius: 1rem;
-box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-display: flex;
-flex-direction: column;
-gap: 0.75rem;
+
+/* ----------------------------- */
+/* ASK AI BUTTON */
+/* ----------------------------- */
+
+.askAIMain {
+  background: #C6FFD6;
+  color: #1D502D;
+  padding: 1rem;
+  border-radius: 2rem;
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
-.suggestionTitle {
-font-size: 1.2rem;
-font-weight: 600;
-color: #2B6B3A;
+
+/* ----------------------------- */
+/* DESKTOP SIDEBAR */
+/* ----------------------------- */
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: #1E5A39;
+  padding: 2rem 1.2rem;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
 }
-.suggestionText {
-font-size: 0.9rem;
-color: #555;
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
 }
-.primaryButton {
-background: #4CAF50;
-color: white;
-padding: 0.75rem 1rem;
-border-radius: 0.75rem;
-font-size: 0.95rem;
-font-weight: 500;
-text-align: center;
+
+.sidebarItem {
+  font-size: 1.1rem;
+  padding: 0.6rem 0.4rem;
+  border-radius: 0.5rem;
+  color: #D5FFE4;
+  text-decoration: none;
 }
-.navGrid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 0.75rem;
+
+.sidebarItem:hover {
+  background: rgba(255,255,255,0.1);
 }
-.navItem {
-background: #ffffff;
+
+/* ----------------------------- */
+/* DESKTOP STATS ROW */
+/* ----------------------------- */
+
+.desktopStats {
+  display: none;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* ----------------------------- */
+/* DESKTOP BREAKPOINT */
+/* ----------------------------- */
+
+@media (min-width: 900px) {
+
+  .sidebar {
+    display: flex;
+  }
+
+  /* Hide mobile menu button */
+  .menuButton,
+  .mobileMenu,
+  .mobileTopBar {
+    display: none;
+  }
+
+  /* Show desktop stats */
+  .desktopStats {
+    display: flex;
+  }
+
+  .container {
+    margin-left: 260px;
+  }
 }

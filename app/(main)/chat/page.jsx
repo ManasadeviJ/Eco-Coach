@@ -1,21 +1,107 @@
-// import 
+"use client";
+import { useState } from "react";
+import styles from "./chat.module.css";
+
 export default function ChatPage() {
-return (
-<div className="min-h-screen bg-[#EAF8EE] px-5 py-6 flex flex-col gap-5">
-<h1 className="text-2xl font-semibold text-[#2B6B3A]">Ask Eco Coach</h1>
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  const [messages, setMessages] = useState([
+    { role: "assistant", text: "Hi! 🌱 How can I help you live greener today?" }
+  ]);
 
-{/* Chat Area (static example) */}
-<div className="flex flex-col gap-3 flex-1 overflow-y-auto">
-<div className="bg-white w-fit max-w-[80%] rounded-xl px-4 py-3 shadow text-sm">Here are some eco ideas you can try.</div>
-</div>
+  const [input, setInput] = useState("");
 
+  const sendMessage = () => {
+    if (!input.trim()) return;
 
-{/* Input */}
-<div className="flex gap-2">
-<input className="flex-1 bg-white rounded-xl px-4 py-3 shadow text-sm outline-none" placeholder="Ask something..." />
-<button className="bg-[#4CAF50] text-white px-5 rounded-xl text-sm hover:opacity-90">Send</button>
-</div>
-</div>
-);
+    setMessages([...messages, { role: "user", text: input }]);
+    setInput("");
+
+    // Fake AI reply placeholder
+    setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", text: "Here’s an eco tip: Carry a reusable bottle!" }
+      ]);
+    }, 600);
+  };
+
+  return (
+    <div className={styles.wrapper}>
+
+      {/* Desktop Sidebar */}
+      <aside className={styles.sidebar}>
+        <h2 className={styles.logo}>EcoCoach</h2>
+        <a href="/home" className={styles.sidebarItem}>Home</a>
+        <a href="/chat" className={styles.sidebarItemActive}>Chat</a>
+        <a href="/challenges" className={styles.sidebarItem}>Challenges</a>
+        <a href="/world" className={styles.sidebarItem}>World</a>
+        <a href="/rewards" className={styles.sidebarItem}>Rewards</a>
+      </aside>
+
+      {/* Main Chat Area */}
+      <main className={styles.container}>
+
+        {/* Mobile Top Bar */}
+        <div className={styles.mobileTopBar}>
+          <button
+            className={styles.menuButton}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
+          <h2 className={styles.header}>Ask Eco Coach</h2>
+        </div>
+
+        {/* Mobile Dropdown Menu */}
+        {menuOpen && (
+          <div className={styles.mobileMenu}>
+            <a href="/home">Home</a>
+            <a href="/chat">Chat</a>
+            <a href="/challenges">Challenges</a>
+            <a href="/world">World</a>
+            <a href="/rewards">Rewards</a>
+          </div>
+        )}
+
+        {/* Desktop Header */}
+        <h2 className={styles.desktopHeader}>Ask Eco Coach</h2>
+
+        {/* Quick Prompt Chips */}
+        <div className={styles.chipsRow}>
+          <button className={styles.chip}>How to reduce plastic?</button>
+          <button className={styles.chip}>Eco alternatives?</button>
+          <button className={styles.chip}>Today’s challenge?</button>
+        </div>
+
+        {/* Chat Messages */}
+        <div className={styles.chatArea}>
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={
+                msg.role === "user" ? styles.userBubble : styles.aiBubble
+              }
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+
+        {/* Input Bar */}
+        <div className={styles.inputBar}>
+          <input
+            type="text"
+            className={styles.inputField}
+            placeholder="Ask something eco-friendly..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button className={styles.sendButton} onClick={sendMessage}>
+            ➤
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 }

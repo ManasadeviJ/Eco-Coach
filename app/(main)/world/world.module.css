@@ -1,38 +1,218 @@
+/* MAIN WRAPPER */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #52A676;
+  color: white;
+}
 
+/* MAIN CONTENT */
 .container {
-min-height: 100vh;
-background: #EAF8EE;
-padding: 1.5rem 1.25rem;
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
-.headerTitle { font-size: 1.75rem; font-weight: 600; color: #2B6B3A; }
-.headerSubtitle { font-size: 0.9rem; color: gray; }
-.statsRow { display: flex; gap: 1rem; flex-wrap: wrap; }
-.statCard {
-background: white;
-padding: 0.75rem 1rem;
-border-radius: 0.75rem;
-font-size: 0.9rem;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+/* MOBILE TOP BAR */
+.mobileTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.menuButton {
+  background: transparent;
+  border: none;
+  font-size: 1.9rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* CHIPS */
+.statsTop {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chip {
+  background: rgba(0,0,0,0.18);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.9rem;
+  border-radius: 0.7rem;
+}
+
+/* MOBILE MENU */
+.mobileMenu {
+  background: rgba(0,0,0,0.25);
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobileMenu a {
+  font-size: 1.15rem;
+  color: white;
+  text-decoration: none;
+}
+
+/* DESKTOP SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: #1E5A39;
+  height: 100vh;
+  padding: 2rem 1.4rem;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  color: white;
+}
+
+.logo {
+  font-size: 1.65rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
+
+.sidebarItem,
+.sidebarItemActive {
+  color: #D5FFE4;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+}
+
+.sidebarItemActive {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Desktop Stats Row */
+.desktopStats {
+  display: none;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+/* TITLES */
+.title {
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin-top: -0.6rem;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* GLOBE */
 .globeWrapper {
-height: 20rem;
-background: white;
-border-radius: 1rem;
-display: flex;
-align-items: center;
-justify-content: center;
-color: gray;
-box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: center;
 }
-.actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
-.actionItem {
-background: white;
-padding: 0.75rem;
-text-align: center;
-border-radius: 0.75rem;
-font-size: 0.9rem;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+.globe {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at center, #B5E7C8, #4F9D6A);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.globeText {
+  position: absolute;
+  bottom: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* SAMPLE TREE ELEMENTS */
+.treeOne {
+  width: 14px;
+  height: 20px;
+  background: #2D6A3B;
+  border-radius: 4px;
+  position: absolute;
+  top: 70px;
+  left: 110px;
+}
+
+.treeTwo {
+  width: 17px;
+  height: 24px;
+  background: #1B5528;
+  border-radius: 4px;
+  position: absolute;
+  top: 120px;
+  left: 70px;
+}
+
+.sapling {
+  width: 10px;
+  height: 16px;
+  background: #6DCB78;
+  border-radius: 4px;
+  position: absolute;
+  top: 150px;
+  left: 145px;
+}
+
+/* Bird */
+.bird {
+  width: 16px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 60px;
+  right: 80px;
+}
+
+/* ACTION ROW */
+.actionRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.linkButton {
+  padding: 0.7rem 1.2rem;
+  background: rgba(0,0,0,0.16);
+  border-radius: 0.6rem;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* DESKTOP BREAKPOINT */
+@media (min-width: 900px) {
+
+  .sidebar {
+    display: flex;
+  }
+
+  .menuButton,
+  .mobileTopBar,
+  .mobileMenu {
+    display: none;
+  }
+
+  .desktopStats {
+    display: flex;
+  }
+
+  .container {
+    margin-left: 260px;
+  }
 }
