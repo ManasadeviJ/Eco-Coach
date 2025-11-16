@@ -1,10 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./sidebar.module.css";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
+  const [coins, setCoins] = useState(0);
+
+  // Load coins from localStorage
+  useEffect(() => {
+    // Initial load
+    const storedCoins = parseInt(localStorage.getItem("coins") || "0");
+    setCoins(storedCoins);
+
+    // Listen for custom coin update event
+    const handleCoinUpdate = (event) => {
+      const updatedCoins = parseInt(localStorage.getItem("coins") || "0");
+      setCoins(updatedCoins);
+    };
+
+    window.addEventListener("coinsUpdated", handleCoinUpdate);
+    return () => window.removeEventListener("coinsUpdated", handleCoinUpdate);
+  }, []);
 
   return (
     <>
@@ -40,7 +57,7 @@ export default function Sidebar() {
       <div className={styles.topStats}>
         <div className={styles.coins}>
           <img src="/icons/coin.png" alt="" />
-          <span>703</span>
+          <span>{coins}</span>
           <button className={styles.plus}>+</button>
         </div>
 

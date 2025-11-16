@@ -3,18 +3,40 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import styles from "./home.module.css";
+import { 
+  loadAcceptedChallenge, 
+  removeAcceptedChallenge, 
+  loadCoins, 
+  addCoins,
+  getTreeStage
+} from "@/lib/challengeLogic";
 
 export default function HomePage() {
   const router = useRouter();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [coins, setCoins] = useState(0);
 
   // -------- CHALLENGE TIMER --------
-  const [acceptedChallenge, setAcceptedChallenge] = useState(false);
+  const [acceptedChallenge, setAcceptedChallenge] = useState(null);
   const [timerPercentage, setTimerPercentage] = useState(0);
-  const [treeStage, setTreeStage] = useState("sapling");  
+  const [treeStage, setTreeStage] = useState("sapling");
+  const [challengeCompleted, setChallengeCompleted] = useState(false);
   // values: "sapling", "half", "full", "dry"
 
+  // Load accepted challenge and coins from localStorage on mount
+  useEffect(() => {
+    const storedChallenge = loadAcceptedChallenge();
+    if (storedChallenge) {
+      setAcceptedChallenge(storedChallenge);
+      setChallengeCompleted(false);
+    }
+
+    const storedCoins = loadCoins();
+    setCoins(storedCoins);
+  }, []);
+
+  // Timer effect
   useEffect(() => {
     if (!acceptedChallenge) return;
 
@@ -26,12 +48,7 @@ export default function HomePage() {
       const pct = Math.min((elapsed / totalTime) * 100, 100);
 
       setTimerPercentage(pct);
-
-      // TREE STAGE LOGIC
-      if (pct < 33) setTreeStage("sapling");
-      else if (pct < 66) setTreeStage("half");
-      else if (pct < 100) setTreeStage("full");
-      else setTreeStage("full"); // completed
+      setTreeStage(getTreeStage(pct));
 
     }, 1000);
 
@@ -40,7 +57,42 @@ export default function HomePage() {
 
   // redirect circle tap
   const handleCircleClick = () => {
-    router.push("/challenges");
+    if (!acceptedChallenge) {
+      router.push("/challenges");
+    }
+  };
+
+  const handleCompleteChallenge = (e) => {
+    e.stopPropagation();
+    console.log("Button clicked! Current state - challengeCompleted:", challengeCompleted);
+    
+    if (!challengeCompleted) {
+      // First click: Give reward
+      console.log("First click - Adding coin...");
+      try {
+        const newCoinsValue = addCoins(1);
+        console.log("Coins added. New total:", newCoinsValue);
+        setCoins(newCoinsValue);
+        setChallengeCompleted(true);
+        console.log("State updated - challengeCompleted set to true");
+      } catch (error) {
+        console.error("Error adding coins:", error);
+      }
+    } else {
+      // Second click: Take new challenge
+      console.log("Second click - Taking new challenge...");
+      try {
+        removeAcceptedChallenge();
+        setAcceptedChallenge(null);
+        setChallengeCompleted(false);
+        setTimerPercentage(0);
+        setTreeStage("sapling");
+        console.log("Redirecting to challenges...");
+        router.push("/challenges");
+      } catch (error) {
+        console.error("Error taking new challenge:", error);
+      }
+    }
   };
 
   const handleAskAI = () => {
@@ -71,6 +123,14 @@ export default function HomePage() {
 
         <h1 className={styles.title}>Hi, User</h1>
 
+        {/* COINS DISPLAY */}
+        {/* <div className={styles.coinsDisplay}>
+          <span className={styles.coinIcon}>🪙</span>
+          <span className={styles.coinCount}>{coins}</span>
+        </div> */}
+        <br></br>
+        
+
         {/* ---- CIRCLE AREA ---- */}
         <div className={styles.circleWrapper}>
           <div
@@ -91,9 +151,28 @@ export default function HomePage() {
               style={{ "--pct": `${timerPercentage}%` }}
             ></div>
 
-            <p className={styles.circleText}>
-              {acceptedChallenge ? "Challenge Running…" : "Take today's challenge"}
-            </p>
+            <div className={styles.circleContent}>
+              {acceptedChallenge ? (
+                <>
+                  <p className={styles.circleText}>
+                    {challengeCompleted ? "Challenge Completed!" : "Challenge Running…"}
+                  </p>
+                  <p className={styles.challengeTitle}>
+                    {acceptedChallenge.title || acceptedChallenge.name}
+                  </p>
+                  <button 
+                    className={styles.completedBtn}
+                    onClick={handleCompleteChallenge}
+                  >
+                    {challengeCompleted ? "Take New Challenge" : "Done"}
+                  </button>
+                </>
+              ) : (
+                <p className={styles.circleText}>
+                  Take today's challenge
+                </p>
+              )}
+            </div>
           </div>
         </div>
 

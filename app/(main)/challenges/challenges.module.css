@@ -97,6 +97,12 @@
   border-radius: 1rem;
   font-size: 0.82rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.statusAccept:hover {
+  background: #5a9d63;
+  transform: scale(1.05);
 }
 
 .statusActive {
@@ -105,6 +111,23 @@
   padding: 0.35rem 0.8rem;
   border-radius: 1rem;
   font-size: 0.82rem;
+}
+
+.statusComplete {
+  background: #78C841;
+  color: white;
+  border: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: 1rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.statusComplete:hover {
+  background: #6ab830;
+  transform: scale(1.05);
 }
 
 .statusDone {

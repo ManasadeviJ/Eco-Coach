@@ -24,6 +24,28 @@
   text-align: center;
 }
 
+/* COINS DISPLAY */
+.coinsDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
+.coinIcon {
+  font-size: 1.5rem;
+}
+
+.coinCount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #043915;
+}
+
 /* CIRCLE */
 .circleWrapper {
   display: flex;
@@ -50,6 +72,49 @@
   font-weight: 600;
   color: #043915;
   text-align: center;
+}
+
+.circleContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  z-index: 5;
+  position: relative;
+}
+
+.challengeTitle {
+  font-size: 0.95rem;
+  color: #043915;
+  font-weight: 500;
+  margin: 0;
+  width: 80%;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.completedBtn {
+  margin-top: 0.8rem;
+  background: #78C841;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(120, 200, 65, 0.3);
+  transition: all 0.2s ease;
+  z-index: 10;
+  position: relative;
+}
+
+.completedBtn:hover {
+  background: #6ab830;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(120, 200, 65, 0.4);
 }
 
 /* TIMER BORDER ANIMATION */

@@ -1,218 +1,185 @@
-/* MAIN WRAPPER */
+/* world.module.css */
 .wrapper {
   display: flex;
   min-height: 100vh;
-  width: 100%;
-  background: #52A676;
-  color: white;
+  background: #F4F9E7;
+  color: #123;
 }
 
-/* MAIN CONTENT */
-.container {
+/* main content (centers globe) */
+.main {
   flex: 1;
-  padding: 1.5rem;
+  padding: 2rem 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-}
-
-/* MOBILE TOP BAR */
-.mobileTopBar {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.menuButton {
-  background: transparent;
-  border: none;
-  font-size: 1.9rem;
-  color: white;
-  cursor: pointer;
+/* header */
+.title {
+  font-size: 2rem;
+  color: #255A2A;
+  margin-top: 0.6rem;
 }
-
-/* CHIPS */
-.statsTop {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.chip {
-  background: rgba(0,0,0,0.18);
-  padding: 0.35rem 0.7rem;
-  font-size: 0.9rem;
-  border-radius: 0.7rem;
-}
-
-/* MOBILE MENU */
-.mobileMenu {
-  background: rgba(0,0,0,0.25);
-  padding: 1rem;
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.mobileMenu a {
-  font-size: 1.15rem;
-  color: white;
-  text-decoration: none;
-}
-
-/* DESKTOP SIDEBAR */
-.sidebar {
-  width: 250px;
-  background: #1E5A39;
-  height: 100vh;
-  padding: 2rem 1.4rem;
-  display: none;
-  flex-direction: column;
-  gap: 1rem;
-  color: white;
-}
-
-.logo {
-  font-size: 1.65rem;
-  font-weight: 700;
+.subtitle {
+  color: #587a63;
   margin-bottom: 1.2rem;
 }
 
-.sidebarItem,
-.sidebarItemActive {
-  color: #D5FFE4;
-  text-decoration: none;
-  font-size: 1.1rem;
-  padding: 0.7rem;
-  border-radius: 0.5rem;
+/* stats row */
+.statsRow {
+  display: flex;
+  gap: 1rem;
+  margin: 0.6rem 0 1.4rem 0;
+}
+.statChip {
+  background: #EAF8EE;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  font-weight: 600;
+}
+.statIcon {
+  width: 22px;
+  height: 22px;
 }
 
-.sidebarItemActive {
-  background: rgba(255,255,255,0.15);
-}
-
-/* Desktop Stats Row */
-.desktopStats {
-  display: none;
-  justify-content: flex-end;
-  gap: 0.8rem;
-}
-
-/* TITLES */
-.title {
-  font-size: 2.1rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  margin-top: -0.6rem;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* GLOBE */
+/* globe wrapper */
 .globeWrapper {
+  width: 360px;
+  max-width: 86vw;
+  margin: 0.8rem 0 1.2rem 0;
   display: flex;
   justify-content: center;
 }
-
 .globe {
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle at center, #B5E7C8, #4F9D6A);
-  border-radius: 50%;
+  width: 100%;
+  height: 360px;
   position: relative;
-  box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
-.globeText {
+/* earth image (background) */
+.earthImage {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  display: block;
+  filter: saturate(1.02);
+  transform-origin: 50% 50%;
+  animation: globeFloat 12s linear infinite;
+}
+@keyframes globeFloat {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(1.2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* plant icons positioned absolutely */
+.plantIcon {
   position: absolute;
-  bottom: 15px;
-  font-size: 1.1rem;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+.plantIcon img { width: 100%; height: 100%; object-fit: contain; }
+
+/* to indicate interaction on hover */
+.plantIcon:hover { transform: translate(-50%, -50%) scale(1.08); filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12)); }
+
+/* birds animation */
+.bird {
+  position: absolute;
+  width: 36px;
+  height: 28px;
+  right: 8%;
+  top: 18%;
+  animation: birdFly 6s linear infinite;
+  opacity: 0.95;
+  transform-origin: center;
+}
+@keyframes birdFly {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.95; }
+  50% { transform: translateX(-28vw) translateY(-6vh) rotate(-6deg); opacity: 0.9; }
+  100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.95; }
+}
+
+/* actions row */
+.actionRow {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 90%;
+  max-width: 560px;
+  justify-content: center;
+}
+.primary {
+  background: #2E8A52;
+  color: white;
+  padding: 0.85rem 1.2rem;
+  border-radius: 28px;
+  border: none;
+  font-weight: 700;
+}
+.ghost {
+  background: #EAF8EE;
+  color: #255A2A;
+  padding: 0.7rem 1rem;
+  border-radius: 20px;
+  border: none;
   font-weight: 600;
 }
 
-/* SAMPLE TREE ELEMENTS */
-.treeOne {
-  width: 14px;
-  height: 20px;
-  background: #2D6A3B;
-  border-radius: 4px;
-  position: absolute;
-  top: 70px;
-  left: 110px;
+/* suggest row */
+.suggestRow {
+  margin-top: 1.2rem;
+  width: 92%;
+  max-width: 720px;
 }
-
-.treeTwo {
-  width: 17px;
-  height: 24px;
-  background: #1B5528;
-  border-radius: 4px;
-  position: absolute;
-  top: 120px;
-  left: 70px;
-}
-
-.sapling {
-  width: 10px;
-  height: 16px;
-  background: #6DCB78;
-  border-radius: 4px;
-  position: absolute;
-  top: 150px;
-  left: 145px;
-}
-
-/* Bird */
-.bird {
-  width: 16px;
-  height: 8px;
-  background: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 60px;
-  right: 80px;
-}
-
-/* ACTION ROW */
-.actionRow {
+.suggestBtn {
+  width: 100%;
+  background: #113f2a;
+  color: #EAF8EE;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  font-size: 1.05rem;
+  font-weight: 700;
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  align-items: center;
+  gap: 0.6rem;
+}
+.aiPill {
+  background: #d9ffd9;
+  color: #043915;
+  padding: 0.18rem 0.5rem;
+  border-radius: 6px;
+  margin-left: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
-.linkButton {
-  padding: 0.7rem 1.2rem;
-  background: rgba(0,0,0,0.16);
-  border-radius: 0.6rem;
-  color: white;
-  font-size: 1rem;
-  text-decoration: none;
-  font-weight: 500;
+/* responsive tweaks */
+@media (min-width: 1100px) {
+  .globeWrapper { width: 520px; }
+  .globe { height: 520px; }
+  .plantIcon { width: 64px; height: 64px; }
+  .bird { width: 48px; height: 38px; right: 6%; }
 }
 
-/* DESKTOP BREAKPOINT */
-@media (min-width: 900px) {
-
-  .sidebar {
-    display: flex;
-  }
-
-  .menuButton,
-  .mobileTopBar,
-  .mobileMenu {
-    display: none;
-  }
-
-  .desktopStats {
-    display: flex;
-  }
-
-  .container {
-    margin-left: 260px;
-  }
+/* small screens */
+@media (max-width: 420px) {
+  .statsRow { gap: 0.6rem; }
+  .statChip { padding: 0.45rem 0.7rem; font-size: 0.92rem; }
+  .actionRow { flex-direction: column; }
+  .primary, .ghost { width: 100%; }
 }
