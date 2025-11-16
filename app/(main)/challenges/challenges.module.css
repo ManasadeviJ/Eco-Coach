@@ -1,38 +1,141 @@
-
-
-/* ==============================
-challenges.module.css
-============================== */
-.container {
-min-height: 100vh;
-background: #EAF8EE;
-padding: 1.5rem 1.25rem;
-display: flex;
-flex-direction: column;
-gap: 1.25rem;
+/* WRAPPER */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #F3F8E5;
 }
+
+/* MAIN AREA */
+.main {
+  flex: 1;
+  padding: 1.3rem;
+  padding-left: 304px;
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding-left: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+/* PAGE HEADING */
 .headerTitle {
-font-size: 1.75rem;
-font-weight: 600;
-color: #2B6B3A;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #255A2A;
+  margin-bottom: 1rem;
 }
-.card {
-background: #ffffff;
-padding: 1rem;
-border-radius: 0.75rem;
-display: flex;
-justify-content: space-between;
-align-items: center;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+/* CHALLENGE CARD */
+.challengeCard {
+  background: #ffffff;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
-.cardText { display: flex; flex-direction: column; }
-.cardTitle { font-weight: 600; color: #2B6B3A; }
-.cardMeta { color: gray; font-size: 0.75rem; }
-.actionButton {
-background: #4CAF50;
-color: white;
-padding: 0.5rem 1rem;
-border-radius: 0.5rem;
-font-size: 0.85rem;
+
+/* LEFT GROUP */
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
 }
-@media (min-width: 768px) { .card { padding: 1.25rem; } }
+
+.icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  background: #DFF0D8;
+  padding: 6px;
+}
+
+.textGroup {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2B6B3A;
+}
+
+.cardSubtitle {
+  font-size: 0.78rem;
+  color: #7a8a76;
+}
+
+/* RIGHT SIDE (REWARD + STATUS) */
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* REWARD CHIP */
+.rewardChip {
+  background: #DFF5D0;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  color: #2E7D32;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* STATUS STYLES */
+.statusAccept {
+  background: #6ABF73;
+  color: white;
+  border: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: 1rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.statusActive {
+  background: #FFF4C4;
+  color: #826400;
+  padding: 0.35rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.82rem;
+}
+
+.statusDone {
+  background: #D3ECD3;
+  color: #1E5A39;
+  padding: 0.35rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.82rem;
+}
+
+/* MOBILE SIZE FIX */
+@media (max-width: 600px) {
+
+  .challengeCard {
+    padding: 0.8rem;
+  }
+
+  .icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .rewardChip {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .statusAccept,
+  .statusActive,
+  .statusDone {
+    font-size: 0.75rem;
+    padding: 0.28rem 0.7rem;
+  }
+}
