@@ -1,61 +1,48 @@
 "use client";
-import styles from "./home.module.css";
 import { useState } from "react";
+import styles from "./home.module.css";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className={styles.wrapper}>
-      
+
       {/* Desktop Sidebar */}
-      <aside className={styles.sidebar}>
-        <h2 className={styles.logo}>EcoCoach</h2>
+      <Sidebar />
 
-        <a href="/home" className={styles.sidebarItem}>Home</a>
-        <a href="/chat" className={styles.sidebarItem}>Chat</a>
-        <a href="/challenges" className={styles.sidebarItem}>Challenges</a>
-        <a href="/world" className={styles.sidebarItem}>World</a>
-        <a href="/rewards" className={styles.sidebarItem}>Rewards</a>
-      </aside>
+      {/* Mobile Overlay */}
+      {menuOpen && <div className={styles.overlay} onClick={() => setMenuOpen(false)}></div>}
 
-      {/* Main Content */}
-      <div className={styles.container}>
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          <a href="/home">Home</a>
+          <a href="/chat">Chat</a>
+          <a href="/challenges">Challenges</a>
+          <a href="/world">World</a>
+          <a href="/rewards">Rewards</a>
+        </div>
+      )}
+
+      {/* MAIN CONTENT */}
+      <main className={styles.main}>
 
         {/* Mobile Top Bar */}
-        <div className={styles.mobileTopBar}>
-          <button
-            className={styles.menuButton}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+        {/* <div className={styles.mobileTopBar}>
+          <button className={styles.menuButton} onClick={() => setMenuOpen(true)}>
             ☰
           </button>
 
           <div className={styles.statsTop}>
-            <span className={styles.coinsChip}>Coins 120</span>
-            <span className={styles.treesChip}>Trees 3</span>
+            <span className={styles.chip}>Coins 120</span>
+            <span className={styles.chip}>Trees 3</span>
           </div>
-        </div>
+        </div> */}
 
-        {/* Mobile Dropdown Menu */}
-        {menuOpen && (
-          <div className={styles.mobileMenu}>
-            <a href="/chat">Chat</a>
-            <a href="/challenges">Challenges</a>
-            <a href="/world">World</a>
-            <a href="/rewards">Rewards</a>
-          </div>
-        )}
+        <h1 className={styles.title}>Hi, User</h1>
 
-        {/* Desktop Stats Row (top-right chips) */}
-        <div className={styles.desktopStats}>
-          <span className={styles.coinsChip}>Coins 120</span>
-          <span className={styles.treesChip}>Trees 3</span>
-        </div>
-
-        <h1 className={styles.headerTitle}>Hi, Alex</h1>
-
-        {/* Big Circle */}
         <div className={styles.circleWrapper}>
           <div className={styles.circle}>
             <p className={styles.circleText}>Take today’s challenge</p>
@@ -63,7 +50,8 @@ export default function HomePage() {
         </div>
 
         <button className={styles.askAIMain}>Ask AI</button>
-      </div>
+
+      </main>
     </div>
   );
 }
