@@ -14,10 +14,57 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [openMenu, setOpenMenu] = useState(null);
 
-  const sendMessage = () => {
+  // -------------------------
+  // SEND MESSAGE TO SERVER API
+  // -------------------------
+  const sendMessage = async () => {
     if (!input.trim()) return;
-    setMessages(prev => [...prev, { role: "user", text: input }]);
+
+    const userMessage = input;
+
+    // Add user message to UI
+    setMessages(prev => [...prev, { role: "user", text: userMessage }]);
     setInput("");
+
+    // Temporary “thinking…”
+    setMessages(prev => [
+      ...prev,
+      { role: "assistant", text: "Thinking…" }
+    ]);
+
+    try {
+      // Call server API
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage })
+      });
+
+      const data = await response.json();
+      const aiReply = data.reply || "⚠️ No response from AI.";
+
+      // Replace the "Thinking…" message
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: "assistant",
+          text: aiReply
+        };
+        return updated;
+      });
+    } catch (err) {
+      console.error("Chat Error:", err);
+
+      // Replace with error message
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: "assistant",
+          text: "⚠️ AI is unavailable. Try again soon."
+        };
+        return updated;
+      });
+    }
   };
 
   return (
@@ -36,14 +83,14 @@ export default function ChatPage() {
                 msg.role === "user" ? styles.right : styles.left
               }`}
             >
-              {/* AI icon on left only */}
+              {/* AI icon */}
               {msg.role === "assistant" && (
                 <div className={styles.aiIcon}>
                   <img src="/icons/leaf.png" alt="icon" />
                 </div>
               )}
 
-              {/* Bubble */}
+              {/* BUBBLE */}
               <div className={styles.bubbleWrapper}>
                 <div
                   className={
@@ -55,7 +102,7 @@ export default function ChatPage() {
                   {msg.text}
                 </div>
 
-                {/* 3 Dots for AI messages */}
+                {/* POPUP MENU */}
                 {msg.role === "assistant" && (
                   <button
                     className={styles.dots}
