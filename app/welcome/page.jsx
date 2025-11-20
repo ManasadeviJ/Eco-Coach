@@ -39,7 +39,7 @@ export default function WelcomePage() {
         </button>
 
         <p className={`${styles.footer} ${styles.fade5}`}>
-          Join thousands making a difference 🌱
+          Join thousands making a difference.
         </p>
       </div>
     </div>

@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
+  padding: .5rem;
 }
 
 .inner {
@@ -65,7 +65,7 @@
 /* Button visible */
 .startBtn {
   width: 100%;
-  margin-top: 1rem;
+  /* margin-top: .5rem; */
   padding: 1rem;
   border-radius: 50px;
   background: linear-gradient(to right, #7cd97c, #55c06a);
@@ -98,4 +98,12 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(25px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+.earthPlaceholder {
+  width: 260px;
+  height: 260px;
+  object-fit: contain;
+  opacity: 0.95;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.15));
 }

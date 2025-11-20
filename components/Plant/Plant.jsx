@@ -5,8 +5,8 @@ import styles from "./Plant.module.css";
 
 const ICONS = {
   sapling: "/icons/sapling.png",
-  half: "/icons/growntree.png", // adapt to your assets
-  tree: "/icons/growntree.png",
+  half: "/icons/tree.png",
+  tree: "/icons/tree.png",
   dry: "/icons/driedtree.png",
   bird: "/icons/bird.png"
 };

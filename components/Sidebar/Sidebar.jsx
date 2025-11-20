@@ -44,14 +44,14 @@ export default function Sidebar() {
       <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
         <button className={styles.closeButton} onClick={() => setOpen(false)} aria-label="close menu">✕</button>
 
-        <h2 className={styles.logo}>EcoCoach</h2>
+        <h2 className={styles.logo}>Gamified AI EcoCoach</h2>
 
         <nav className={styles.nav}>
           <Link href="/home" className={styles.item}>Home</Link>
           <Link href="/chat" className={styles.item}>Chat</Link>
           <Link href="/challenges" className={styles.item}>Challenges</Link>
           <Link href="/world" className={styles.item}>World</Link>
-          <Link href="/rewards" className={styles.item}>Rewards</Link>
+          {/* <Link href="/rewards" className={styles.item}>Rewards</Link> */}
         </nav>
 
         <div className={styles.bottomSection}>
