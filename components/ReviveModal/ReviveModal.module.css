@@ -1,0 +1,44 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.modal {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.cancel {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.confirm {
+  background: #78C841;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.confirm[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

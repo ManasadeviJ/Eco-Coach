@@ -1,0 +1,4 @@
+.timer { width: 140px; }
+.timeText { font-weight:600; margin-bottom:6px; }
+.bar { height:8px; background:#eee; border-radius:8px; overflow:hidden; }
+.fill { height:100%; background:linear-gradient(90deg,#16C47F,#0ba66a); transition: width 0.3s; }

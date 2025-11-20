@@ -3,42 +3,47 @@
 
 import React from "react";
 import styles from "./world.module.css";
-import { WorldProvider, useWorld } from "@/context/WorldContext";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { WorldProvider, useWorldContext } from "@/context/WorldContext";
+import { useAuth } from "@/context/AuthContext";
+import WorldGrid from "@/components/WorldGrid/WorldGrid";
+import ReviveModal from "@/components/ReviveModal/ReviveModal";
+import { useState } from "react";
 
 function WorldInner() {
-  const {
-    state,
-    isHydrated,
-    birds,
-    trees,
-    saplings,
-    dry,
-    acceptChallenge,
-    reviveTree,
-    buyPlant,
-    markChallengeCompleted,
-    removePlant,
-  } = useWorld();
+  const auth = useAuth();
+  const user = auth?.user;
+  const userId = user?.id;
 
-  // Don't render until hydrated to avoid mismatch
-  if (!isHydrated) {
-    return (
-      <div className={styles.wrapper}>
-        <Sidebar />
-        <main className={styles.main}>
-          <h1 className={styles.title}>Your World</h1>
-          <p className={styles.subtitle}>Loading...</p>
-        </main>
-      </div>
-    );
-  }
+  const { world, loading, fetchWorld, reviveTree, acceptChallenge, buyPlant } = useWorldContext();
 
-  // Click handlers
-  const onAccept = () => {
-    acceptChallenge();
-    // small toast could be added
+  const [selected, setSelected] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const onPlantClick = (obj) => {
+    if (obj.type === "dry") {
+      setSelected(obj);
+      setModalOpen(true);
+    }
   };
+
+  const confirmRevive = async () => {
+    if (!selected) return;
+    setBusy(true);
+    try {
+      await reviveTree(selected.id);
+      await fetchWorld();
+      setModalOpen(false);
+    } catch (e) {
+      alert(e.message || "Failed to revive");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const treeCount = (world || []).filter(w => w.type === "tree").length;
+  const birdCount = Math.floor(treeCount / 3);
 
   return (
     <div className={styles.wrapper}>
@@ -48,74 +53,45 @@ function WorldInner() {
         <h1 className={styles.title}>Your World</h1>
         <p className={styles.subtitle}>Every action adds life to the planet.</p>
 
-        {/* Stats row */}
         <div className={styles.statsRow}>
           <div className={styles.statChip}>
             <img src="/icons/coin.png" alt="coins" className={styles.statIcon} />
-            <span>{state.coins}</span>
+            <span>{/* coins are in sidebar */}</span>
           </div>
 
           <div className={styles.statChip}>
             <img src="/icons/growntree.png" alt="trees" className={styles.statIcon} />
-            <span>{trees} Trees</span>
+            <span>{treeCount} Trees</span>
           </div>
 
           <div className={styles.statChip}>
             <img src="/icons/bird.png" alt="birds" className={styles.statIcon} />
-            <span>{birds}</span>
+            <span>{birdCount}</span>
           </div>
         </div>
 
-        {/* globe area */}
         <div className={styles.globeWrapper}>
-          <div className={styles.globe}>
-            <img src="/icons/earth.png" className={styles.earthImage} alt="earth" />
-
-            {/* overlay plants */}
-            {state.plants.map((p) => {
-              const stage = p.status === "dry" ? "driedtree" : p.status === "full" ? "growntree" : "sapling";
-              const src = `/icons/${stage}.png`;
-              return (
-                <div
-                  key={p.id}
-                  className={styles.plantIcon}
-                  style={{ left: p.x, top: p.y }}
-                  title={p.status === "dry" ? "Dry tree (revive for 1 coin)" : p.status === "full" ? "Grown tree" : "Sapling — complete the challenge to grow"}
-                  onClick={() => {
-                    if (p.status === "dry") reviveTree(p.id);
-                  }}
-                >
-                  <img src={src} alt={stage} />
-                </div>
-              );
-            })}
-
-            {/* birds as floating images */}
-            {Array.from({ length: birds }).map((_, i) => (
-              <img key={i} src="/icons/bird.png" alt="bird" className={styles.bird} style={{ animationDelay: `${i * 0.7}s` }} />
-            ))}
-
-          </div>
+          {loading ? <div>Loading…</div> : <WorldGrid world={world} onPlantClick={onPlantClick} />}
         </div>
 
-        {/* actions */}
         <div className={styles.actionRow}>
           <button className={styles.primary} onClick={() => (window.location.href = "/challenges")}>
             View Challenges
           </button>
-
           <button className={styles.ghost} onClick={() => buyPlant("sapling", 3)}>
             Shop (Buy sapling - 3 coins)
           </button>
         </div>
 
         <div className={styles.suggestRow}>
-          <button className={styles.suggestBtn} onClick={onAccept}>
+          <button className={styles.suggestBtn} onClick={() => acceptChallenge()}>
             Suggest an eco idea (AI)
             <span className={styles.aiPill}>AI</span>
           </button>
         </div>
       </main>
+
+      <ReviveModal open={modalOpen} onClose={() => setModalOpen(false)} onConfirm={confirmRevive} cost={1} busy={busy} />
     </div>
   );
 }

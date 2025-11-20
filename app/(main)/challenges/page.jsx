@@ -1,96 +1,77 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import ChallengeCard from "@/components/ChallengeCard/ChallengeCard";
 import styles from "./challenges.module.css";
-import { loadAcceptedChallenge, saveAcceptedChallenge, removeAcceptedChallenge } from "@/lib/challengeLogic";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ChallengesPage() {
   const router = useRouter();
-  const [challenges, setChallenges] = useState([
-    {
-      id: 1,
-      title: "Avoid Plastic",
-      subtitle: "Daily Habit",
-      icon: "/icons/no-plastic.png",
-      reward: 40,
-      status: "accept" // accept, active, done
-    },
-    {
-      id: 2,
-      title: "Plant a Tree",
-      subtitle: "Fortlite Co",
-      icon: "/icons/tree.png",
-      reward: 30,
-      status: "accept"
-    },
-    {
-      id: 3,
-      title: "Use Your Own Bag",
-      subtitle: "Ongoing Habit",
-      icon: "/icons/bag.png",
-      reward: 15,
-      status: "accept"
-    }
-  ]);
+  const auth = useAuth();
+  const user = auth?.user;
+  const userId = user?.id;
 
-  // Load accepted challenge status on mount
-  useEffect(() => {
-    const acceptedChallenge = loadAcceptedChallenge();
-    if (acceptedChallenge) {
-      setChallenges(prev => 
-        prev.map(c => 
-          c.id === acceptedChallenge.id ? { ...c, status: "active" } : c
-        )
-      );
+  const [loading, setLoading] = useState(true);
+  const [challengeList, setChallengeList] = useState([]);
+  const [acceptingId, setAcceptingId] = useState(null);
+
+  /** -------------------------
+   * LOAD AVAILABLE CHALLENGES
+   ---------------------------*/
+  const loadChallenges = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/challenge"); // GET list
+      if (!res.ok) throw new Error("Failed to fetch challenges");
+
+      const json = await res.json();
+      setChallengeList(json.challenges || []);
+    } catch (err) {
+      console.error(err);
+      setChallengeList([]);
     }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadChallenges();
   }, []);
 
-  const handleAcceptChallenge = (challenge) => {
-    // Save to localStorage using utility function
-    saveAcceptedChallenge(challenge);
-    
-    // Update status
-    setChallenges(challenges.map(c => 
-      c.id === challenge.id ? { ...c, status: "active" } : c
-    ));
-    
-    // Redirect to home
-    router.push("/home");
-  };
-
-  const handleCompleteChallenge = (challenge) => {
-    // Remove accepted challenge from localStorage
-    removeAcceptedChallenge();
-    
-    // Update challenge status to done
-    setChallenges(challenges.map(c => 
-      c.id === challenge.id ? { ...c, status: "done" } : c
-    ));
-  };
-
-  const getStatusButton = (challenge) => {
-    if (challenge.status === "accept") {
-      return (
-        <button 
-          className={styles.statusAccept}
-          onClick={() => handleAcceptChallenge(challenge)}
-        >
-          Accept
-        </button>
-      );
-    } else if (challenge.status === "active") {
-      return (
-        <button 
-          className={styles.statusDone}
-          onClick={() => handleCompleteChallenge(challenge)}
-        >
-          ✓ Done
-        </button>
-      );
-    } else {
-      return <span className={styles.statusDone}>✓ Done</span>;
+  /** -------------------------
+   * ACCEPT CHALLENGE
+   ---------------------------*/
+  const handleAccept = async (challenge) => {
+    if (!userId) {
+      router.push("/login");
+      return;
     }
+
+    setAcceptingId(challenge.id);
+
+    try {
+      const res = await fetch("/api/active", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ challenge_id: challenge.id }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        alert(err);
+        setAcceptingId(null);
+        return;
+      }
+
+      // Success → go home to show timer & sapling
+      router.push("/home");
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
+    }
+
+    setAcceptingId(null);
   };
 
   return (
@@ -100,24 +81,21 @@ export default function ChallengesPage() {
       <main className={styles.main}>
         <h1 className={styles.headerTitle}>Daily Challenges</h1>
 
-        {challenges.map((challenge) => (
-          <div key={challenge.id} className={styles.challengeCard}>
-            <div className={styles.leftGroup}>
-              <img src={challenge.icon} className={styles.icon} />
+        {loading && <p>Loading challenges...</p>}
 
-              <div className={styles.textGroup}>
-                <h3 className={styles.cardTitle}>{challenge.title}</h3>
-                <p className={styles.cardSubtitle}>{challenge.subtitle}</p>
-              </div>
-            </div>
+        {!loading && challengeList.length === 0 && (
+          <p>No challenges available today.</p>
+        )}
 
-            <div className={styles.rightGroup}>
-              <span className={styles.rewardChip}>{challenge.reward}</span>
-              {getStatusButton(challenge)}
-            </div>
-          </div>
+        {/* Render via reusable ChallengeCard */}
+        {challengeList.map((challenge) => (
+          <ChallengeCard
+            key={challenge.id}
+            challenge={challenge}
+            onAccept={handleAccept}
+            accepting={acceptingId === challenge.id}
+          />
         ))}
-
       </main>
     </div>
   );

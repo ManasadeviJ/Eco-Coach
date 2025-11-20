@@ -1,32 +1,62 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req) {
   try {
-    const { message } = await req.json();
+    const { message, weather, location } = await req.json();
 
-    const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
+    if (!process.env.GEMINI_API_KEY) {
+      return Response.json(
+        { error: "Missing GEMINI_API_KEY" },
+        { status: 500 }
+      );
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash"  // This works in public API
     });
 
-    const result = await ai.models.generateContent({
-      model: "gemini-2.0-flash",   // 👈 NEW WORKING MODEL
-      contents: message,
-    });
+    const prompt = `
+You are EcoCoach.
+Reply in JSON ONLY:
+{
+ "eco_response": "",
+ "eco_challenge": ""
+}
 
-    const reply =
-      result?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "⚠️ No response";
+User message: ${message}
 
-    return Response.json({ reply });
+Weather: ${weather?.summary || "unknown"}
+Temperature: ${weather?.temperature || "unknown"}°C
+Location: ${location?.city || "unknown"}
+
+Give:
+1. 2-3 short energetic lines
+2. 1 simple eco-challenge
+`;
+
+    const result = await model.generateContent(prompt);
+
+    const raw = result.response.text() || "";
+
+    // Extract JSON object from text
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) {
+      return Response.json({
+        eco_response: "Unexpected response format.",
+        eco_challenge: ""
+      });
+    }
+
+    const data = JSON.parse(match[0]);
+
+    return Response.json(data);
 
   } catch (err) {
-    console.error("🔥 API ROUTE CRASHED:", err);
-
-    return new Response(
-      JSON.stringify({
-        reply: "SERVER CRASH",
-        error: String(err),
-      }),
+    console.error("🔥 API ERROR:", err);
+    return Response.json(
+      { eco_response: "EcoCoach is facing an issue!", error: String(err) },
       { status: 500 }
     );
   }

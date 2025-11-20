@@ -1,0 +1,6 @@
+.card { background: white; border-radius: 8px; padding: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+.header { display:flex; justify-content:space-between; align-items:center; }
+.points { background: #e6f9ef; color:#0b7a4a; padding:4px 8px; border-radius:6px; }
+.desc { margin:8px 0; color:#444; }
+.acceptBtn { background:#16C47F; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.acceptBtn[disabled]{ opacity:0.6; cursor:not-allowed; }

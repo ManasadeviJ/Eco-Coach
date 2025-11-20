@@ -1,0 +1,10 @@
+EcoCoach uses the browser's built-in geolocation API, which only works if the user explicitly grants permission. We do not store or transmit raw GPS coordinates to the server. Instead, location is processed locally to fetch weather data using OpenWeather. Only a high-level weather summary (like “Rainy, 28°C”) is sent to the AI to generate personalized eco-challenges. No personal data, no identifying information, and no exact location is ever saved in Supabase or shared with external APIs.
+
+
+public/icons/* sprites: sapling.png, halftree.png (or driedtree.png), tree.png, coin.png, leaf.png.
+
+
+
+import { useAuth } from "@/context/AuthContext";
+
+const { user } = useAuth();

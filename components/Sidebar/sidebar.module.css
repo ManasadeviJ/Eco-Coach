@@ -12,7 +12,7 @@
   padding: 2.2rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  justify-content: space-between;   /* IMPORTANT */
   z-index: 999;
   transform: translateX(-100%);
   transition: transform 0.35s ease;
@@ -29,6 +29,7 @@
   margin-bottom: 1rem;
 }
 
+/* MAIN NAV */
 .nav {
   display: flex;
   flex-direction: column;
@@ -49,7 +50,39 @@
 }
 
 /* ===================================== */
-/* MOBILE HAMBURGER BUTTON */
+/* BOTTOM PROFILE BUTTON */
+/* ===================================== */
+
+.bottomSection {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.7rem 0.5rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1.05rem;
+  color: #ffffff;
+  transition: 0.25s;
+}
+
+.profileBtn img {
+  width: 22px;
+  height: 22px;
+}
+
+.profileBtn:hover {
+  background: rgba(255,255,255,0.28);
+  transform: translateX(2px);
+}
+
+/* ===================================== */
+/* HAMBURGER */
 /* ===================================== */
 
 .menuButton {
@@ -74,9 +107,7 @@
   border-radius: 3px;
 }
 
-/* ===================================== */
 /* CLOSE BUTTON (mobile only) */
-/* ===================================== */
 
 .closeButton {
   display: block;
@@ -88,10 +119,7 @@
   color: white;
 }
 
-/* ===================================== */
-/* OVERLAY (when sidebar opens) */
-/* ===================================== */
-
+/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -101,7 +129,7 @@
 }
 
 /* ===================================== */
-/* TOP RIGHT STATS SECTION */
+/* TOP RIGHT STATS */
 /* ===================================== */
 
 .topStats {
@@ -151,7 +179,7 @@
 }
 
 /* ===================================== */
-/* DESKTOP OVERRIDE */
+/* DESKTOP */
 /* ===================================== */
 
 @media (min-width: 900px) {
