@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "Walk Instead of Ride",
+    "description": "Walk at least 2,000 extra steps today instead of using a bike/scooter/car.",
+    "category": "Plastic",
+    "points": 10
+  },
+  {
+    "id": 2,
+    "title": "Save Electricity",
+    "description": "Turn off appliances when not in use.",
+    "category": "Energy",
+    "points": 8
+  }
+]

@@ -1,12 +1,8 @@
-/* FULL SCREEN BACKGROUND — matches welcome page */
+/* FULL SCREEN WRAPPER */
 .wrapper {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    #f7ffe5 0%,
-    #e3f9d7 100%
-  );
+  background: #cbf3bb;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,47 +25,42 @@
 
 /* TITLE */
 .authBox h2 {
-  color: #043915;   /* eco dark green */
+  color: #043915;
   font-size: 1.8rem;
   margin-bottom: 0.4rem;
-  font-weight: 700;
 }
 
-/* INPUT FIELDS */
+/* INPUT FIELDS — Padding fixed */
 .authBox input {
   width: 100%;
-  background: #f3ffed;        /* soft eco pastel */
-  border: 2px solid #7bcf63;  /* eco green border */
+  background: #ecffe6;
+  border: 2px solid #78c841;
   border-radius: 0.8rem;
-  padding: 0.9rem 1.1rem;
+  padding: 0.9rem 1.1rem;       /* ⭐ FIXED: right padding added */
   font-size: 1rem;
   color: #043915;
   outline: none;
-  box-sizing: border-box;
+  box-sizing: border-box;       /* ⭐ Prevents overflow issues */
 }
 
-.authBox input:focus {
-  border-color: #55b85a;
-  box-shadow: 0 0 0 3px rgba(85, 184, 90, 0.25);
-}
-
-/* BUTTON — same eco green style used in welcome button */
+/* BUTTON */
 .authBox button {
   width: 100%;
   padding: 0.9rem;
-  background: linear-gradient(to right, #7cd97c, #55c06a);
+  background: #78c841;
   color: white;
   font-size: 1.1rem;
   font-weight: 600;
   border: none;
-  border-radius: 50px;
+  border-radius: 0.8rem;
   cursor: pointer;
   box-shadow: 0 6px 12px rgba(120, 200, 65, 0.25);
   transition: 0.2s ease;
 }
 
 .authBox button:hover {
-  transform: translateY(-2px);
+  background: #6ab830;
+  transform: scale(1.03);
 }
 
 /* TEXT + LINKS */

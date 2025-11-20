@@ -1,7 +1,7 @@
 // components/Sidebar/Sidebar.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./sidebar.module.css";
 import { useAuth } from "@/context/AuthContext";
 import usePoints from "@/hooks/usePoints";
@@ -12,7 +12,23 @@ export default function Sidebar() {
   const user = auth?.user;
   const userId = user?.id;
   const { points: coins, loading } = usePoints(userId);
+  const [localCoins, setLocalCoins] = useState(coins);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setLocalCoins(coins);
+  }, [coins]);
+
+  // Listen for coin updates from challenge completion
+  useEffect(() => {
+    const handleCoinsUpdate = (event) => {
+      const newCoins = event.detail?.coins || 0;
+      setLocalCoins((prev) => (prev || 0) + newCoins);
+    };
+
+    window.addEventListener("coinsUpdated", handleCoinsUpdate);
+    return () => window.removeEventListener("coinsUpdated", handleCoinsUpdate);
+  }, []);
 
   return (
     <>
@@ -49,7 +65,7 @@ export default function Sidebar() {
       <div className={styles.topStats}>
         <div className={styles.coins} title="Your coins">
           <img src="/icons/coin.png" alt="coins" />
-          <span>{loading ? "…" : (coins ?? 0)}</span>
+          <span>{loading ? "…" : (localCoins ?? 0)}</span>
           <button className={styles.plus} aria-label="Add coins">+</button>
         </div>
 

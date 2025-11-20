@@ -34,20 +34,26 @@ export default function LoginPage() {
 
   return (
     <div className={styles.wrapper}>
-      <h2>Login</h2>
+      <div className={styles.authBox}>
+        <h2>Login</h2>
 
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input
-        placeholder="Password"
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <button onClick={login}>Login</button>
+        <input
+          placeholder="Password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <p>
-        Don’t have an account? <a href="/signup">Create one</a>
-      </p>
+        <button onClick={login}>Login</button>
+
+        <p>
+          Don’t have an account? <a href="/signup">Create one</a>
+        </p>
+      </div>
     </div>
   );
 }

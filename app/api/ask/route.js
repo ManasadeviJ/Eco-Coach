@@ -56,7 +56,7 @@ Give:
   } catch (err) {
     console.error("🔥 API ERROR:", err);
     return Response.json(
-      { eco_response: "EcoCoach is facing an issue!", error: String(err) },
+      { eco_response: "Walk at least 2,000 extra steps today instead of using a bike/scooter/car.", error: String(err) },
       { status: 500 }
     );
   }

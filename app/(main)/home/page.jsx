@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import CompletionReward from "@/components/CompletionReward/CompletionReward";
 import styles from "./home.module.css";
 import { useAuth } from "@/context/AuthContext";
 
@@ -24,6 +25,10 @@ export default function HomePage() {
   const [acceptedChallenge, setAcceptedChallenge] = useState(null);
   const [challengeCompleted, setChallengeCompleted] = useState(false);
 
+  // Completion reward modal
+  const [showReward, setShowReward] = useState(false);
+  const [rewardCoins, setRewardCoins] = useState(0);
+
   // Timer UI
   const [timerPercentage, setTimerPercentage] = useState(0);
   const [treeStage, setTreeStage] = useState("sapling"); // sapling, half, full, dry
@@ -31,7 +36,17 @@ export default function HomePage() {
 
   // load active challenge for the user
   const fetchActive = async () => {
+    // If user not logged in, prefer a locally-persisted active challenge
     if (!userId) {
+      try {
+        const raw = localStorage.getItem("local_active_challenge");
+        if (raw) {
+          setAcceptedChallenge(JSON.parse(raw));
+          return;
+        }
+      } catch (err) {
+        console.error("local fetchActive parse error", err);
+      }
       setAcceptedChallenge(null);
       return;
     }
@@ -124,13 +139,67 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
+  // Listen for local accept events so the Home circle updates when anonymous user accepts
+  useEffect(() => {
+    const onLocal = () => {
+      try {
+        const raw = localStorage.getItem("local_active_challenge");
+        if (raw) {
+          setAcceptedChallenge(JSON.parse(raw));
+          setChallengeCompleted(false);
+        } else {
+          if (userId) fetchActive();
+          else setAcceptedChallenge(null);
+        }
+      } catch (err) {
+        console.error("onLocal parse error", err);
+      }
+    };
+
+    window.addEventListener("localActiveUpdated", onLocal);
+    return () => window.removeEventListener("localActiveUpdated", onLocal);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
   // Handle Done / Take New Challenge button
   const handleCompleteChallenge = async (e) => {
     e?.stopPropagation?.();
 
     // not logged in -> push to login
     if (!userId) {
-      router.push("/(auth)/login");
+      // For anonymous users we support a local-only flow:
+      // - complete the locally-stored active challenge
+      // - show reward modal and award a default number of coins
+      if (!acceptedChallenge) {
+        router.push("/challenges");
+        return;
+      }
+
+      if (challengeCompleted) {
+        await fetchActive();
+        router.push("/challenges");
+        return;
+      }
+
+      try {
+        const coinsEarned = 5;
+        setRewardCoins(coinsEarned);
+        setShowReward(true);
+        setChallengeCompleted(true);
+
+        // notify sidebar
+        window.dispatchEvent(
+          new CustomEvent("coinsUpdated", { detail: { coins: coinsEarned } })
+        );
+
+        // clear local active
+        localStorage.removeItem("local_active_challenge");
+        setAcceptedChallenge(null);
+      } catch (err) {
+        console.error("local complete error", err);
+        alert("Unable to complete challenge locally");
+      }
+
       return;
     }
 
@@ -171,13 +240,25 @@ export default function HomePage() {
 
       // success: server will update coins via RPC and the world row
       const data = await res.json();
+      
+      // Extract coins from response (assume server returns coins_earned or similar)
+      const coinsEarned = data.coins_earned || data.points || 5;
+      setRewardCoins(coinsEarned);
+      
+      // Show reward modal
+      setShowReward(true);
+      
       // set UI to completed (this toggles button behaviour)
       setChallengeCompleted(true);
+
+      // Dispatch custom event so Sidebar updates coin count
+      window.dispatchEvent(
+        new CustomEvent("coinsUpdated", { detail: { coins: coinsEarned } })
+      );
 
       // refresh state (active challenge might be removed or updated)
       await fetchActive();
 
-      // rely on Sidebar realtime to show updated coins
     } catch (err) {
       console.error("error completing challenge", err);
       alert("Network error when completing challenge.");
@@ -255,6 +336,13 @@ export default function HomePage() {
           Ask AI
         </button>
       </main>
+
+      <CompletionReward
+        open={showReward}
+        onClose={() => setShowReward(false)}
+        coinsEarned={rewardCoins}
+        treeGrown={true}
+      />
     </div>
   );
 }
